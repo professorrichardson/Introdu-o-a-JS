@@ -1,7 +1,4 @@
-# Introdu-o-a-JS
-Introdução ao JavaScript com integração dos Formadores em Ação
-
-# Iniciando projeto
+# 1- Iniciando projeto
 
 
 
@@ -191,7 +188,7 @@ Ao executar, temos dois círculos menores representando os olhos, dentro de um c
 
 Na próxima aula, pensaremos qual será a forma geométrica que precisamos para continuar o desenho!
 
-# Desenhando mais formas geométricas
+# 2- Desenhando mais formas geométricas
 
 
 
@@ -379,9 +376,9 @@ function draw() {
 Ao executar o código, desenhamos um triângulo no centro do rosto, como se fosse o nariz do personagem. Se precisar fazer algum ajuste, basta alterar os valores, como fizemos com os anteriores, até que o código desenhe tudo do seu jeito.
 
 
-# pintando nosso desenho
+# 3- Pintando nosso desenho
 
-[Próxima Atividade](https://cursos.alura.com.br/course/criando-arte-interativa-com-p5js/task/180192/next)
+
 
 Agora que já temos as formas iniciais e os principais elementos do personagem, exploraremos algumas opções de cores para dar mais vida ao projeto.
 
@@ -545,7 +542,7 @@ function draw() {
 
 Dessa forma, podemos explorar diversas cores e tonalidades para cada forma geométrica no desenho.
 
-# Adicionando mais formas geométricas
+# 4-  Adicionando mais formas geométricas
 
 Adicionaremos mais alguns detalhes ao projeto. Por exemplo, para adicionar uma sobrancelha, podemos usar o nosso  `if`  para coletar as coordenadas no plano cartesiano, como fizemos anteriormente, e desenhar uma linha sobre os olhos, uma para cada olho.
 
