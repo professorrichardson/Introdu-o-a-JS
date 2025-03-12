@@ -733,3 +733,300 @@ Esses comentários ajudam a organizar o código, mas não alteram nada no compor
 > Antes de finalizar, lembre-se de  **salvar o projeto**, clicando na opção  **”Arquivo”**, no menu superior e depois em  **”Salvar**”. Ou use o atalho de teclado “**Ctrl + S**”.
 
 ![Captura de tela do navegador na página do p5.js mostrando o canto superior esquerdo. O título do editor “p5*” está destacado no canto esquerdo. Ao lado, temos as opções do menu: “Arquivo”, “Editar” e “Esboço”. Uma seta vermelha aponta para a opção “Arquivo”, que está selecionada. Abaixo dela, temos a opção “Novo” e a opção “Salvar”, destacada em vermelho. ](http://cdn3.gnarususercontent.com.br/3962-logica-programacao/imagens-atividades/CriandoArteInterativaComp5js-FCF3.6.png)
+
+
+Nesta aula, vamos implementar a pupila que pode seguir o cursor do mouse.
+
+## Utilizando a função  `map()`.
+
+Imagine o seu projeto sendo criado em uma folha de papel ou em uma tela de pintura. Ele poderia ser reproduzido perfeitamente. No entanto, uma coisa que não poderia ser feita é animar o desenho.
+
+Queremos que as pupilas dos dois olhos possam  **”olhar para o cursor do mouse”**, acompanhando a direção do movimento.
+
+A analogia que faremos para construir essa animação é inspirada na  **Monalisa**, de Leonardo da Vinci. Você já ouviu falar dela?
+
+Uma curiosidade sobre essa pintura é justamente a  **ilusão de ótica**  que faz com que a  **Monalisa**  pareça estar sempre olhando para nós, não importa de que ângulo você olhe para ela.
+
+Vamos pensar em como construir isso em nosso projeto?
+
+## Criando uma nova pupila esquerda
+
+O primeiro passo será criar uma  **nova pupila**. Vamos comentar a linha da pupila esquerda, pois essa nova pupila irá substituí-la.
+
+> Adicionar o comando de comentário  `//`  no começo de alguma linha de código é uma prática muito comum na programação, permitindo testar funcionalidades novas sem precisar apagar o código anterior.
+
+Adicionaremos um  `circle()`  abaixo da pupila direita, com as coordenadas  `mouseX`  e  `mouseY`, e o diâmetro  `10`, conforme fizemos anteriormente. Lembre-se de que as letras  `X`  e  `Y`  devem estar  **maiúsculas**.
+
+```scss
+function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background("#FF5722");
+  fill("#03A9F4");
+  circle(200, 200, 300); // rosto
+  fill("white");
+  circle(150, 150, 60); // olho esquerdo
+  circle(250, 150, 60); // olho direito
+  line(150, 270, 250, 235); // boca
+  fill("#3F51B5");
+  triangle(200, 180, 170, 220, 220, 220); // nariz
+  line(123, 115, 178, 113); // sobrancelha esquerda
+  line(225, 116, 279, 106); // sobrancelha direita
+  // circle(150, 150, 10); // pupila esquerda
+  circle(250, 150, 10); // pupila direita
+  circle(mouseX, mouseY, 10); // nova pupila esquerda
+
+  if (mouseIsPressed) {
+    console.log(mouseX, mouseY);
+  }
+}
+
+```
+
+> O  **p5.js**  é capaz de encontrar as coordenadas X e Y do nosso mouse com as variáveis  `mouseX`  e  `mouseY`. Esse código pode não funcionar da mesma forma em outras plataformas.
+
+Ao executar o código, vemos que a pupila segue o mouse. Porém, a ideia é que ela fique no olho e não saia do projeto.
+
+Nesse caso, precisamos trabalhar com um novo  **conceito de programação**.
+
+## Entendendo o conceito de variável
+
+Com o código parado, criaremos uma nova informação para armazenar a nova posição da pupila. Em programação, chamamos isso de  **variável**, ou seja, algo que pode variar ao longo do projeto.
+
+A ideia é que o cursor do mouse pode se mover para qualquer lugar da tela, mas a pupila precisa se mover apenas dentro do olho. Sendo assim, precisaremos  **remapear**  as coordenadas onde o ponto da pupila pode se posicionar. Para isso, usaremos a função  `map()`.
+
+## Usando a função  `map()`  para estabelecer limites
+
+Vamos criar essa nova variável com o nome de  `olhoX`. É importante que ela seja criada  **antes**  do comando que cria a  **nova pupila esquerda**, pois sua posição será usada para criar a nova pupila.
+
+Após definir o nome da variável, atribuímos o valor  `map()`  a ela, usando o sinal de  **igual**  (`=`).
+
+```javascript
+function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background("#FF5722");
+  fill("#03A9F4");
+  circle(200, 200, 300); // rosto
+  fill("white");
+  circle(150, 150, 60); // olho esquerdo
+  circle(250, 150, 60); // olho direito
+  line(150, 270, 250, 235); // boca
+  fill("#3F51B5");
+  triangle(200, 180, 170, 220, 220, 220); // nariz
+  line(123, 115, 178, 113); // sobrancelha esquerda
+  line(225, 116, 279, 106); // sobrancelha direita
+  // circle(150, 150, 10); // pupila esquerda
+  circle(250, 150, 10); // pupila direita
+
+  olhoX = map();
+
+  circle(mouseX, mouseY, 10); // nova pupila esquerda
+
+  if (mouseIsPressed) {
+    console.log(mouseX, mouseY);
+  }
+}
+
+```
+
+Vamos pular algumas linhas aqui para facilitar a leitura e compreensão do código.
+
+> > Linhas vazias não fazem diferença no código. O computador simplesmente ignora esses espaços e segue para o próximo código.
+
+O  `map()`  vai definir nossa variável, lendo a posição do mouse e limitando a posição da pupila. Para isso, vamos definir as coordenadas que queremos como parâmetros.
+
+Primeiramente, a variável  `mouseX`  pode ir de  `0`, que é o canto esquerdo do projeto, até  `400`, que é o canto direito. Sabemos disso porque criamos o canvas com esse tamanho.
+
+Isso foi feito no começo do projeto, na  **linha 2**, com o comando  `createCanvas(400, 400);`
+
+> Se o seu canvas tiver, por exemplo,  **600**  no eixo  `x`, podemos usar o limite de 600.
+
+Passaremos essas informações para o comando  `map()`:
+
+```go
+// código omitido
+
+circle(250, 150, 10); // pupila direita
+
+olhoX = map(mouseX, 0, 400);
+
+circle(mouseX, mouseY, 10); // nova pupila esquerda
+
+// código omitido
+
+```
+
+Agora, precisamos mapear a área limite da pupila. Neste caso, precisamos saber os limites da coordenada  `x`  dentro do olho esquerdo.
+
+Podemos obter essa informação usando o  **clique do mouse**  e analisando as informações no  **Terminal**, como feito anteriormente.
+
+Clique no  **canto esquerdo**  de dentro do  **olho esquerdo**. Ems eguida, clique no  **canto direito**  de dentro do mesmo  **olho esquerdo**.
+
+Fazendo isso, recebemos no  **Terminal**  as coordenadas  `132, 150`  e  `166, 150`. Sabemos que cada clique nos dá duas coordenadas:  `x`  e  `y`. Como estamos mapeando o  `olhoX`, usaremos apenas os valores  `132`  e  `166`, por enquanto.
+
+> Lembre-se de fazer seus próprios testes, pois cada projeto pode ter valores diferentes.
+
+Passando esses valores para a função  `map()`, teremos:
+
+```go
+// código omitido
+
+olhoX = map(mouseX, 0, 400, 132, 166);
+
+// código omitido
+
+```
+
+Podemos fazer o mesmo com o valor do  `mouseY`. Logo abaixo de  `olhoX`, vamos declarar  `olhoY = map();`. Desta vez, vamos mapear os valores da coordenada  `y`, ou seja, a altura.
+
+O valor máximo e mínimo já sabemos. São as mesmas proporções definidas no  `createCanvas`. Neste caso, teremos  `mouseY, 0, 400`.
+
+Para os limites da pupila na altura do olho, vamos clicar no  **canto superior, dentro do olho esquerdo**. Depois, mais um clique no  **canto inferior, dentro do olho esquerdo**.
+
+Recebemos os valores  `148, 133`  e  `151, 169`. Desta vez, precisamos apenas dos valores de  `y`, portanto, usaremos  `133`  e  `169`.
+
+```go
+// código omitido
+
+olhoX = map(mouseX, 0, 400, 130, 170);
+olhoY = map(mouseY, 0, 400, 133, 169);
+
+// código omitido
+
+```
+
+Perceba que ambos os pares de valores, tanto em  `olhoX`  quanto em  `olhoY`, são muito próximos. Sendo assim, podemos simplificar o código e arredondar os valores. Vamos usar  `130`  para o  `x`  e  `170`  para o  `y`.
+
+```go
+// código omitido
+
+olhoX = map(mouseX, 0, 400, 130, 170);
+olhoY = map(mouseY, 0, 400, 130, 170);
+
+// código omitido
+
+```
+
+Agora, podemos substituir os parâmetros do último  `circle()`, onde criamos a  **nova pupila esquerda**.
+
+Trocamos o  `mouseX`  e o  `mouseY`  pelas  **variáveis**  com o mapeamento que criamos.
+
+```go
+// código omitido
+
+olhoX = map(mouseX, 0, 400, 130, 170);
+olhoY = map(mouseY, 0, 400, 130, 170);
+
+circle(olhoX, olhoY, 10); // nova pupila esquerda
+
+// código omitido
+
+```
+
+Ao executar o código, a pupila não sai mais do olho, mas segue o cursor do mouse!
+
+## Criando uma nova pupila direita
+
+Finalizando esse processo, precisamos criar a  **nova pupila**  para o  **olho direito**.
+
+Já podemos comentar a criação da  **pupila direita**, pois substituiremos por uma nova.
+
+```cpp
+// circle(150, 150, 10); // pupila esquerda
+// circle(250, 150, 10); // pupila direita
+
+```
+
+Para criar a  **nova pupila esquerda**, usaremos o mesmo mapeamento que fizemos.
+
+Perceba que a primeira  **pupila esquerda**  que criamos tinha os valores  `150, 150, 10`  para centralizá-la.
+
+A  **pupila direita**  foi criada com valores muito parecidos:  `250, 150, 10`. Portanto, os parâmetros de  `y`  e do diâmetro são  **os mesmo**.
+
+Sendo assim, sabemos que a diferença está apenas no valor da  **coordenada**  `x`, que tem o valor maior em  `100`.
+
+Podemos criar um novo  `circle`  para a  **nova pupila direita**, logo após a linha da  **nova pupila esquerda**, que receberá  `olhoX + 100, olhoY, 10`.
+
+```go
+// código omitido
+
+// circle(150, 150, 10); // pupila esquerda
+// circle(250, 150, 10); // pupila direita
+
+olhoX = map(mouseX, 0, 400, 130, 170);
+olhoY = map(mouseY, 0, 400, 130, 170);
+
+circle(olhoX, olhoY, 10); // nova pupila esquerda
+circle(olhoX + 100, olhoY, 10); //nova pupila direita
+
+// código omitido
+
+```
+
+> Se o seu canvas ou a posição dos olhos no seu projeto forem diferentes, talvez seja necessário ajustar esses valores para o seu código.
+
+# Boas práticas na programação
+
+Para finalizar, vamos reforçar uma prática muito importante no desenvolvimento de códigos. As variáveis que criamos (`olhoX`  e  `olhoY`) aparecem no código e fazem o  **mapeamento da posição**  das novas pupilas direita e esquerda.
+
+Porém, é muito melhor para o computador, que essas variáveis sejam  **declaradas antes**. Na maioria dos casos, fazemos isso fora da função, ou seja, entre o  `setup()`  e o  `draw()`.
+
+Para declarar uma variável no  **JavaScript**, escrevemos  `let`, seguido do nome da variável. Faremos isso para as duas variáveis, portanto:
+
+```csharp
+function setup() {
+  createCanvas(400, 400);
+}
+let olhoX;
+let olhoY;
+
+// código omitido
+
+```
+
+> O que isso significa? Ao declarar uma variável, estamos reservando um espaço na memória do computador, como se uma “caixinha” fosse criada com esse nome. Nesse espaço, os valores do mapeamento da pupila ficarão guardados, podendo ser alterados e lidos durante a função  `draw()`. Isso torna o código mais leve, otimizado e pode evitar alguns problemas de código.
+
+```javascript
+function setup() {
+  createCanvas(400, 400);
+}
+let olhoX;
+let olhoY;
+
+function draw() {
+  background("#FF5722");
+  fill("#03A9F4");
+  circle(200, 200, 300); // rosto
+  fill("white");
+  circle(150, 150, 60); // olho esquerdo
+  circle(250, 150, 60); // olho direito
+  line(150, 270, 250, 235); // boca
+  fill("#3F51B5");
+  triangle(200, 180, 170, 220, 220, 220); // nariz
+  line(123, 115, 178, 113); // sobrancelha esquerda
+  line(225, 116, 279, 106); // sobrancelha direita
+  // circle(150,150,10); // pupila esquerda
+  //circle(250,150,10); // pupila direita
+
+  olhoX = map(mouseX, 0, 400, 130, 170);
+  olhoY = map(mouseY, 0, 400, 130, 170);
+
+  circle(olhoX, olhoY, 10); // nova pupila esquerda
+  circle(olhoX + 100, olhoY, 10); //nova pupila direita
+  if (mouseIsPressed) {
+    console.log(mouseX, mouseY);
+  }
+}
+
+```
+
+Execute seu projeto e veja que as pupilas dos olhos estarão sempre se movendo na direção do cursor do mouse, dentro da área do desenho.
+
+> Antes de finalizar, lembre-se de  **salvar o projeto**, clicando na opção  **”Arquivo”**, no menu superior e depois em  **”Salvar**”. Ou use o atalho de teclado “**Ctrl + S**”.
+
+![Captura de tela do navegador na página do p5.js mostrando o canto superior esquerdo. O título do editor “p5*” está destacado no canto esquerdo. Ao lado, temos as opções do menu: “Arquivo”, “Editar” e “Esboço”. Uma seta vermelha aponta para a opção “Arquivo”, que está selecionada. Abaixo dela, temos a opção “Novo” e a opção “Salvar”, destacada em vermelho. ](http://cdn3.gnarususercontent.com.br/3962-logica-programacao/imagens-atividades/CriandoArteInterativaComp5js-FCF3.6.png)
